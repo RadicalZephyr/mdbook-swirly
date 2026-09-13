@@ -1,0 +1,27 @@
+[package]
+name = "mdbook-swirly"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+description = "An mdBook preprocessor that renders Swirly marble and grid diagrams to SVG at build time"
+license = "MIT"
+repository = "https://github.com/zefs/mdbook-swirly"
+readme = "README.md"
+keywords = ["mdbook", "preprocessor", "diagram", "svg", "frp"]
+categories = ["command-line-utilities", "visualization"]
+# js/ only matters when regenerating the bundle, which needs a Swirly checkout.
+exclude = ["js/", ".github/", "tests/book/"]
+
+[dependencies]
+anyhow = "1"
+pulldown-cmark = { version = "0.13", default-features = false }
+rquickjs = "0.13"
+serde_json = "1"
+toml_edit = "0.22"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

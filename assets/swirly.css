@@ -1,0 +1,40 @@
+/*
+ * mdbook-swirly
+ *
+ * Diagrams are rendered once, at build time, but mdBook switches theme in the
+ * browser. The "adaptive" theme emits every colour as `currentColor` and no
+ * background, so these few rules are what tie a diagram to whichever theme the
+ * reader has chosen -- including custom themes, as long as they define mdBook's
+ * standard --fg and --bg variables.
+ *
+ * Installed by `mdbook-swirly install`. Safe to edit; it is not overwritten
+ * unless you pass --force.
+ */
+
+svg.swirly {
+  display: block;
+  margin: 1.25em auto;
+  max-width: 100%;
+  height: auto;
+  color: var(--fg);
+}
+
+/*
+ * The only <rect> a grid diagram emits is a cell box, and it has to read as
+ * opaque so the dashed transaction grid stops at its edges. A CSS rule beats
+ * the presentation attribute on the element, which exists only as a
+ * light-background fallback for when this stylesheet is missing.
+ */
+svg.swirly rect {
+  fill: var(--bg);
+}
+
+@media print {
+  svg.swirly {
+    color: #000;
+  }
+
+  svg.swirly rect {
+    fill: #fff;
+  }
+}
