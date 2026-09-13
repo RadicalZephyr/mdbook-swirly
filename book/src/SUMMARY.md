@@ -30,6 +30,9 @@
 # Explanation
 
 - [Explanation](explanation/index.md)
+  - [Why render at build time](explanation/build-time-rendering.md)
+  - [How adaptive theming works](explanation/adaptive-theming.md)
+  - [Architecture](explanation/architecture.md)
 
 # Examples
 
