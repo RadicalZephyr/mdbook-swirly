@@ -290,7 +290,7 @@ mod tests {
     #[test]
     fn a_bad_spec_fails_the_build_by_default() {
         let renderer = Renderer::new().unwrap();
-        let md = "```swirly\n@ t | 0 | 1\n\n> s | 'a' |\n```\n";
+        let md = "```swirly\n@ t | 0 | 1\n\n> s | 'a'\n```\n";
         let err = render_chapter(md, "ch.md", &renderer, &Config::default()).unwrap_err();
         let text = format!("{err:#}");
         assert!(text.contains("ch.md:1"), "{text}");
@@ -304,7 +304,7 @@ mod tests {
             on_error: OnError::Warn,
             ..Config::default()
         };
-        let md = "```swirly\n@ t | 0 | 1\n\n> s | 'a' |\n```\n";
+        let md = "```swirly\n@ t | 0 | 1\n\n> s | 'a'\n```\n";
         let out = render_chapter(md, "ch.md", &renderer, &config).unwrap();
         assert!(out.contains("```swirly"), "{out}");
     }
@@ -312,7 +312,7 @@ mod tests {
     #[test]
     fn a_per_block_theme_overrides_the_book_default() {
         let renderer = Renderer::new().unwrap();
-        let md = "```swirly theme=light\n@ t | 0\n\n> s | 'a' |\n```\n";
+        let md = "```swirly theme=light\n@ t | 0\n\n> s | 'a'\n```\n";
         let out = render_chapter(md, "t.md", &renderer, &Config::default()).unwrap();
         // The light theme paints real colours; adaptive would be all currentColor.
         assert!(out.contains("black"), "{out}");

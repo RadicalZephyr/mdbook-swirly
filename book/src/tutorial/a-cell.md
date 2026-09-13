@@ -9,13 +9,13 @@ Replace your chapter's diagram with this:
 ```text
 @ t | 0 | 1 | 2 | 3 | 4 | 5
 
-= c | 'a' |  | 'b' |  | 'c' |  |
+= c | 'a' |  | 'b' |  | 'c' |
 ```
 
 ```swirly
 @ t | 0 | 1 | 2 | 3 | 4 | 5
 
-= c | 'a' |  | 'b' |  | 'c' |  |
+= c | 'a' |  | 'b' |  | 'c' |
 ```
 
 `=` declares a cell row. The slots work exactly as they did for a stream —
@@ -38,17 +38,17 @@ the relationship:
 ```text
 @ t | 0 | 1 | 2 | 3 | 4 | 5
 
-= c | 'a' |     | 'b' |     | 'c' |  |
+= c | 'a' |     | 'b' |     | 'c' |
 
-> s |     | 'b' |     | 'c' |     |  |
+> s |     | 'b' |     | 'c' |     |
 ```
 
 ```swirly
 @ t | 0 | 1 | 2 | 3 | 4 | 5
 
-= c | 'a' |     | 'b' |     | 'c' |  |
+= c | 'a' |     | 'b' |     | 'c' |
 
-> s |     | 'b' |     | 'c' |     |  |
+> s |     | 'b' |     | 'c' |     |
 ```
 
 Read a column at a time. `s` fires `'b'` in transaction 1, and `c` changes to
@@ -65,17 +65,17 @@ A cell does not have to run to the end of the diagram. Add a `to` line directly
 beneath the row — no blank line, because it belongs to the same block:
 
 ```text
-= c | 'a' |     | 'b' |     | 'c' |  |
+= c | 'a' |     | 'b' |     | 'c' |
 to = 5
 ```
 
 ```swirly
 @ t | 0 | 1 | 2 | 3 | 4 | 5
 
-= c | 'a' |     | 'b' |     | 'c' |  |
+= c | 'a' |     | 'b' |     | 'c' |
 to = 5
 
-> s |     | 'b' |     | 'c' |     |  |
+> s |     | 'b' |     | 'c' |     |
 ```
 
 The box now closes at transaction 5 and the line carries on to the same

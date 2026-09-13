@@ -38,8 +38,20 @@ the two by accident.
 ```
 
 The segment before the first `|` is the gutter label and may be empty. Each
-segment after it is one column — one transaction. A trailing `|` closes the
-last column rather than opening an empty one.
+segment after it is one column — one transaction.
+
+**One `|` declares one column**, and the axis draws one dashed boundary per
+column with none after the last, so the line above is three pipes, three
+columns and three dashed lines. There is no special case for a trailing pipe:
+the count of pipes on a line is the count of columns it declares, and a grid
+row carries exactly the same number.
+
+A final `|` with nothing after it therefore declares an *unlabelled* column,
+which is how a diagram asks for a closing boundary:
+
+```swirly
+@ t | 0 | 1 |
+```
 
 A column label may be prefixed with one `>` per level of nesting, for diagrams
 that split a transaction:
@@ -70,8 +82,11 @@ column.
 Slots are trimmed, so you may pad them to line up with the axis. A slot's text
 is drawn verbatim — the quotes in `'a'` are yours, not the notation's.
 
-**Every row must have exactly as many slots as the axis has columns.** A
-mismatch stops the build.
+**Every row must have exactly as many slots as the axis has columns**, which
+means exactly as many pipes. A mismatch stops the build.
+
+A row whose last slot is empty ends in a bare `|` and needs no extra one, so an
+all-empty three-column row is `> s | | |`.
 
 ### Stream rows — `>`
 
@@ -79,13 +94,13 @@ A line running the width of the axis, ending in an arrowhead. An empty slot
 means the stream did not fire in that transaction.
 
 ```text
-> s1 | 'a' |  | 'b' |
+> s1 | 'a' |  | 'b'
 ```
 
 ```swirly
 @ t | 0 | 1 | 2
 
-> s1 | 'a' |  | 'b' |
+> s1 | 'a' |  | 'b'
 ```
 
 ### Cell rows — `=`
@@ -94,13 +109,13 @@ A box holding a value across an interval. A non-empty slot changes the held
 value; an empty one keeps it. Dividers are derived from that, not written.
 
 ```text
-= c | 'a' |  | 'b' |
+= c | 'a' |  | 'b'
 ```
 
 ```swirly
 @ t | 0 | 1 | 2
 
-= c | 'a' |  | 'b' |
+= c | 'a' |  | 'b'
 ```
 
 **Configuration:**
@@ -110,12 +125,14 @@ value; an empty one keeps it. Dividers are derived from that, not written.
 | `from` | column label whose opening boundary the box starts at. Default: before column 0 |
 | `to` | column label whose opening boundary the box closes at. Default: after the last column |
 
-Both take a column *label*, not an index.
+Both take a column *label*, not an index. The box overhangs the boundary that
+bounds it rather than sitting flush against it, so a cell reads as holding its
+value *through* that transaction.
 
 ```swirly
 @ t | 0 | 1 | 2 | 3 | 4
 
-= c |  | 'a' |  | 'b' |  |
+= c |  | 'a' |  | 'b' |
 from = 1
 to = 4
 ```
@@ -125,15 +142,15 @@ to = 4
 A label and values with no line of their own, for commenting on a transaction.
 
 ```text
-. a1 |  | 'a' |  |
+. a1 |  | 'a' |
 ```
 
 ```swirly
 @ t | 0 | 1 | 2
 
-= c | 'a' |  | 'b' |
+= c | 'a' |  | 'b'
 
-. a1 |  | 'a' |  |
+. a1 |  | 'a' |
 ```
 
 ### References
@@ -145,11 +162,11 @@ stream.
 ```swirly
 @ t | 0 | 1 | 2 | 3
 
-> s1 | 'a' | 'b' | 'c' | 'd' |
+> s1 | 'a' | 'b' | 'c' | 'd'
 
-> s2 | 'W' | 'X' | 'Y' | 'Z' |
+> s2 | 'W' | 'X' | 'Y' | 'Z'
 
-=  c | s1  |     | s2  |     |
+=  c | s1  |     | s2  |
 ```
 
 Resolution happens after the whole diagram is parsed, so the row being named

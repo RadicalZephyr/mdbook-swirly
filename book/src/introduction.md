@@ -10,10 +10,10 @@ Write a diagram in a fenced block tagged `swirly`:
 ```swirly
 @ t | 0 | 1 | 2 | 3 | 4 | 5
 
-= c | 'a' |     | 'b' |     | 'c' |  |
+= c | 'a' |     | 'b' |     | 'c' |
 to = 5
 
-> s1 |     | 'b' |     | 'c' |     |  |
+> s1 |     | 'b' |     | 'c' |     |
 ```
 ~~~
 
@@ -22,10 +22,10 @@ and the page gets this in its place:
 ```swirly
 @ t | 0 | 1 | 2 | 3 | 4 | 5
 
-= c | 'a' |     | 'b' |     | 'c' |  |
+= c | 'a' |     | 'b' |     | 'c' |
 to = 5
 
-> s1 |     | 'b' |     | 'c' |     |  |
+> s1 |     | 'b' |     | 'c' |     |
 ```
 
 No client-side JavaScript, no image files to keep in step with the prose, and

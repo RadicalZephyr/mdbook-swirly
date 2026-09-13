@@ -6,10 +6,10 @@ Coal or Ayu. The diagram below changes with it:
 ```swirly
 @ t | 0 | 1 | 2 | 3 | 4 | 5
 
-= c | 'a' |     | 'b' |     | 'c' |  |
+= c | 'a' |     | 'b' |     | 'c' |
 to = 5
 
-> s |     | 'b' |     | 'c' |     |  |
+> s |     | 'b' |     | 'c' |     |
 ```
 
 Your own book does the same. Switch themes in the browser tab you left running
@@ -54,10 +54,10 @@ theme = "sodium"
 ```swirly theme=sodium
 @ t | 0 | 1 | 2 | 3 | 4 | 5
 
-= c | 'a' |     | 'b' |     | 'c' |  |
+= c | 'a' |     | 'b' |     | 'c' |
 to = 5
 
-> s |     | 'b' |     | 'c' |     |  |
+> s |     | 'b' |     | 'c' |     |
 ```
 
 It stays black on white whatever the reader picks, which is right for print and

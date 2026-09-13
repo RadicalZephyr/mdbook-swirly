@@ -66,7 +66,7 @@ pub fn run(dir: &Path, options: &Options) -> Result<()> {
     println!("\n    ```swirly");
     println!("    @ t | 0 | 1 | 2");
     println!();
-    println!("    > s | 'a' |  | 'b' |");
+    println!("    > s | 'a' |  | 'b'");
     println!("    ```");
 
     Ok(())

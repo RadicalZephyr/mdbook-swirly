@@ -79,7 +79,7 @@ fn supports_handshake_exits_zero() {
 
 #[test]
 fn renders_a_block_and_leaves_the_rest_alone() {
-    let md = "# Title\n\nProse.\n\n```swirly\n@ t | 0 | 1\n\n> s | 'a' |  |\n```\n\nMore prose.\n";
+    let md = "# Title\n\nProse.\n\n```swirly\n@ t | 0 | 1\n\n> s | 'a' |\n```\n\nMore prose.\n";
     let (ok, stdout, stderr) = run(&payload(md, json!({})));
     assert!(ok, "{stderr}");
 
@@ -104,7 +104,7 @@ fn leaves_a_book_without_diagrams_untouched() {
 
 #[test]
 fn honours_the_configured_theme() {
-    let md = "```swirly\n@ t | 0\n\n> s | 'a' |\n```\n";
+    let md = "```swirly\n@ t | 0\n\n> s | 'a'\n```\n";
     let (ok, stdout, stderr) = run(&payload(md, json!({ "theme": "light" })));
     assert!(ok, "{stderr}");
     let content = first_chapter(&stdout);
@@ -115,7 +115,7 @@ fn honours_the_configured_theme() {
 #[test]
 fn a_bad_spec_fails_the_build_with_a_located_message() {
     // One slot, two columns.
-    let md = "# Title\n\n```swirly\n@ t | 0 | 1\n\n> s | 'a' |\n```\n";
+    let md = "# Title\n\n```swirly\n@ t | 0 | 1\n\n> s | 'a'\n```\n";
     let (ok, _, stderr) = run(&payload(md, json!({})));
     assert!(!ok, "a broken diagram must stop the build");
     assert!(stderr.contains("chapter.md:3"), "{stderr}");
@@ -124,7 +124,7 @@ fn a_bad_spec_fails_the_build_with_a_located_message() {
 
 #[test]
 fn warn_mode_keeps_building() {
-    let md = "```swirly\n@ t | 0 | 1\n\n> s | 'a' |\n```\n";
+    let md = "```swirly\n@ t | 0 | 1\n\n> s | 'a'\n```\n";
     let (ok, stdout, stderr) = run(&payload(md, json!({ "on-error": "warn" })));
     assert!(ok, "{stderr}");
     assert!(stderr.contains("warning"), "{stderr}");

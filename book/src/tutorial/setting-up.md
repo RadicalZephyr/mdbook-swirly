@@ -72,7 +72,7 @@ Open `src/chapter_1.md` and replace its contents with:
 ```swirly
 @ t | 0 | 1 | 2
 
-> s |  |  |  |
+> s |  |  |
 ```
 ~~~
 
@@ -82,7 +82,7 @@ crossing it:
 ```swirly
 @ t | 0 | 1 | 2
 
-> s |  |  |  |
+> s |  |  |
 ```
 
 If you see that, everything is connected. If you still see the source text in a

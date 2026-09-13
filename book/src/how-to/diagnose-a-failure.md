@@ -26,9 +26,9 @@ see all the failures rather than the first.
 ## Common causes
 
 **Slot count.** The most frequent by far. Every row must have exactly one slot
-per axis column. Count the pipes: with three columns you want
-`> s | a | b | c |` — three slots, with the trailing pipe closing the last one
-rather than opening a fourth.
+per axis column. Count the pipes — a row carries the same number as the axis
+above it. With three columns you want `> s | a | b | c`, and if the last slot is
+empty, `> s | a | b |`, which is still three pipes.
 
 **`from` or `to` naming a column that does not exist.** These take a column
 *label*, not an index. If your axis is `@ t | zero | one`, then `to = 1` is an
@@ -55,7 +55,7 @@ It reads stdin if you give it no file, so you can paste a block straight in:
 mdbook-swirly render <<'EOF'
 @ t | 0 | 1 | 2
 
-> s | 'a' |  | 'b' |
+> s | 'a' |  | 'b'
 EOF
 ```
 

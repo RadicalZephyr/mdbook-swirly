@@ -57,7 +57,7 @@ keys, set in a `[styles]` block inside the diagram itself:
 ```swirly
 @ t | 0 | 1 | 2
 
-> s | 'a' | 'b' | 'c' |
+> s | 'a' | 'b' | 'c'
 
 [styles]
 axis_column_width = 160

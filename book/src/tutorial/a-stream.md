@@ -30,7 +30,7 @@ what happened in that instant.
 ## A stream row
 
 ```text
-> s |  |  |  |
+> s |  |  |
 ```
 
 `>` declares a stream row, `s` is its gutter label, and then there is one slot
@@ -40,12 +40,13 @@ just runs through:
 ```swirly
 @ t | 0 | 1 | 2
 
-> s |  |  |  |
+> s |  |  |
 ```
 
-Count the pipes. Three columns means three slots, and the trailing `|` closes
-the last one rather than opening a fourth. Get this wrong and the build stops
-with a message saying so, which you will see for yourself in
+Count the pipes. One `|` is one slot, and the axis line above has exactly the
+same number — three pipes on both. An empty last slot is a bare trailing `|`,
+not an extra one. Get the count wrong and the build stops with a message saying
+so, which you will see for yourself in
 [Diagnose a failing diagram](../how-to/diagnose-a-failure.md).
 
 ## Making it fire
@@ -53,13 +54,13 @@ with a message saying so, which you will see for yourself in
 Put values in the slots:
 
 ```text
-> s | 'a' |  | 'b' |
+> s | 'a' |  | 'b'
 ```
 
 ```swirly
 @ t | 0 | 1 | 2
 
-> s | 'a' |  | 'b' |
+> s | 'a' |  | 'b'
 ```
 
 The stream fires `'a'` in transaction 0, nothing in 1, and `'b'` in 2. Notice
@@ -78,17 +79,17 @@ Add a second row. Remember the blank line between blocks:
 ```text
 @ t | 0 | 1 | 2
 
-> s1 | 'a' |     | 'b' |
+> s1 | 'a' |     | 'b'
 
-> s2 |     | 'x' | 'y'  |
+> s2 |     | 'x' | 'y'
 ```
 
 ```swirly
 @ t | 0 | 1 | 2
 
-> s1 | 'a' |     | 'b' |
+> s1 | 'a' |     | 'b'
 
-> s2 |     | 'x' | 'y'  |
+> s2 |     | 'x' | 'y'
 ```
 
 Both rows hang off the same axis, so transaction 2 is a single column and you
