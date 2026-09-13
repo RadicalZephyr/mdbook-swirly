@@ -35,9 +35,14 @@ jobs:
         with:
           submodules: true
 
-      - uses: actions/setup-node@v4
+      # Swirly's lockfile is in the submodule rather than at the repository
+      # root, so the cache has to be pointed at it. `cache: yarn` is not
+      # optional either: setup-node v6 narrowed automatic caching to npm only.
+      - uses: actions/setup-node@v7
         with:
           node-version: 18
+          cache: yarn
+          cache-dependency-path: vendor/swirly/yarn.lock
 
       # Nothing in this job launches a browser, so skip Puppeteer's ~150 MB
       # Chromium download during install.
