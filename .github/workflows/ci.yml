@@ -39,9 +39,21 @@ jobs:
         with:
           node-version: 18
 
+      # Nothing in this job launches a browser, so skip Puppeteer's ~150 MB
+      # Chromium download during install.
+      - name: Install Swirly's dependencies
+        working-directory: vendor/swirly
+        run: yarn --frozen-lockfile
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: "true"
+
+      # Not `yarn build`: that runs turbo over every package, including
+      # @swirly/examples, which rasterizes its PNGs by driving headless
+      # Chromium and cannot launch it on a runner. Those images are no use to
+      # the bundle -- it needs the library packages and nothing else.
       - name: Build Swirly
         working-directory: vendor/swirly
-        run: yarn --frozen-lockfile && yarn build
+        run: yarn build --filter='!@swirly/examples'
 
       - name: Regenerate the bundle
         run: ./js/build.sh
