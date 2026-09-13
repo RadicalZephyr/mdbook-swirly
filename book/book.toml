@@ -1,0 +1,22 @@
+[book]
+title = "mdbook-swirly"
+description = "Render Swirly marble and grid diagrams in an mdBook at build time"
+authors = ["Zefira Shannon"]
+language = "en"
+src = "src"
+
+[build]
+build-dir = "../target/book"
+
+[output.html]
+default-theme = "light"
+git-repository-url = "https://github.com/zefs/mdbook-swirly"
+edit-url-template = "https://github.com/zefs/mdbook-swirly/edit/main/book/{path}"
+additional-css = ["./assets/swirly.css"]
+
+[preprocessor.swirly]
+# cwd for a preprocessor is the book root, so this resolves whether you run
+# mdbook from here or from the repository root. Run `cargo build --release`
+# first; no install needed.
+command = "../target/release/mdbook-swirly"
+after = ["links"]
