@@ -20,12 +20,15 @@ svg.swirly {
 }
 
 /*
- * The only <rect> a grid diagram emits is a cell box, and it has to read as
- * opaque so the dashed transaction grid stops at its edges. A CSS rule beats
- * the presentation attribute on the element, which exists only as a
- * light-background fallback for when this stylesheet is missing.
+ * Fills have to be the page background rather than the ink colour, or a cell
+ * box turns into a solid block and a marble swallows its own label. The
+ * elements carry a literal light colour as a fallback for when this stylesheet
+ * is missing; a CSS rule beats a presentation attribute, so this wins.
+ *
+ * <rect> is a cell box or an operator band, <ellipse> is a marble.
  */
-svg.swirly rect {
+svg.swirly rect,
+svg.swirly ellipse {
   fill: var(--bg);
 }
 
@@ -34,7 +37,8 @@ svg.swirly rect {
     color: #000;
   }
 
-  svg.swirly rect {
+  svg.swirly rect,
+  svg.swirly ellipse {
     fill: #fff;
   }
 }
