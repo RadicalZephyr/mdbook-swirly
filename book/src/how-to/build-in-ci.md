@@ -38,7 +38,7 @@ Windows:
       - name: Install mdbook-swirly
         run: |
           VERSION=0.1.0
-          curl -sSL "https://github.com/zefs/mdbook-swirly/releases/download/v${VERSION}/mdbook-swirly-v${VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+          curl -sSL "https://github.com/RadicalZephyr/mdbook-swirly/releases/download/v${VERSION}/mdbook-swirly-v${VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
             | tar xz --strip-components=1 -C /usr/local/bin --wildcards '*/mdbook-swirly'
 ```
 
@@ -78,6 +78,6 @@ missing file rather than a missing submodule, which is a confusing five minutes.
 ## Publishing to GitHub Pages
 
 The workflow this book is built with is in
-[`.github/workflows/pages.yml`](https://github.com/zefs/mdbook-swirly/blob/main/.github/workflows/pages.yml)
+[`.github/workflows/pages.yml`](https://github.com/RadicalZephyr/mdbook-swirly/blob/main/.github/workflows/pages.yml)
 and is a working example of all of the above: submodule checkout, a cached
 build of the preprocessor, and deployment to Pages.

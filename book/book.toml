@@ -10,8 +10,8 @@ build-dir = "../target/book"
 
 [output.html]
 default-theme = "light"
-git-repository-url = "https://github.com/zefs/mdbook-swirly"
-edit-url-template = "https://github.com/zefs/mdbook-swirly/edit/main/book/{path}"
+git-repository-url = "https://github.com/RadicalZephyr/mdbook-swirly"
+edit-url-template = "https://github.com/RadicalZephyr/mdbook-swirly/edit/main/book/{path}"
 additional-css = ["./assets/swirly.css"]
 
 [preprocessor.swirly]
