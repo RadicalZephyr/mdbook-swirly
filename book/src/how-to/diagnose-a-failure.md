@@ -61,6 +61,20 @@ EOF
 
 Add `--theme` to check how it looks under a different palette.
 
+## Getting more out of an error
+
+Errors from the renderer carry a JavaScript stack, hidden by default because
+the bundle is minified and the trace is one uninformative offset. If a message
+looks like a bug in the renderer rather than a mistake in your diagram, turn it
+on:
+
+```bash
+MDBOOK_SWIRLY_DEBUG=1 mdbook build
+```
+
+It works for `render` too, which is usually the quicker way to look at one
+diagram.
+
 ## The diagram did not render, but nothing failed
 
 If a `swirly` block comes out as a grey code box, the preprocessor never ran.

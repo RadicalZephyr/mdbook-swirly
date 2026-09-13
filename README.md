@@ -93,6 +93,10 @@ and warning on stderr:
 on-error = "warn"
 ```
 
+Renderer errors carry a JavaScript stack, hidden by default because the bundle
+is minified and the trace says nothing useful. `MDBOOK_SWIRLY_DEBUG=1` brings
+it back.
+
 ## Checking one diagram
 
 ```bash

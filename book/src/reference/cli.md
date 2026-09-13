@@ -62,6 +62,26 @@ The SVG carries `class="swirly"`, so dropping it into a page that has
 Without that stylesheet an `adaptive` rendering inherits whatever `color` is in
 effect where you put it.
 
+## Environment
+
+| Variable | Effect |
+| --- | --- |
+| `MDBOOK_SWIRLY_DEBUG` | append the JavaScript stack to errors raised by the renderer |
+
+Set to anything other than empty or `0`. It is an environment variable rather
+than a flag because mdBook owns the invocation, so this way one build can be
+debugged without editing `book.toml`:
+
+```bash
+MDBOOK_SWIRLY_DEBUG=1 mdbook build
+```
+
+The stack is hidden by default because the bundled renderer is minified: the
+trace is a single offset into one very long line, which tells a reader nothing
+and makes an ordinary message — a slot count, an unknown theme — look like a
+crash. It is still the only view into the bundle when something there genuinely
+breaks.
+
 ## Exit codes
 
 | Code | Meaning |

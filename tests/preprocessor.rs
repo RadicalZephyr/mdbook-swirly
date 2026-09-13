@@ -38,7 +38,18 @@ fn payload(content: &str, config: Value) -> String {
 }
 
 fn run(input: &str) -> (bool, String, String) {
-    let mut child = Command::new(BIN)
+    run_with_env(input, &[])
+}
+
+fn run_with_env(input: &str, env: &[(&str, &str)]) -> (bool, String, String) {
+    let mut command = Command::new(BIN);
+    // Inherited from the developer's shell it would make these assertions
+    // depend on who is running them.
+    command.env_remove("MDBOOK_SWIRLY_DEBUG");
+    for (key, value) in env {
+        command.env(key, value);
+    }
+    let mut child = command
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
@@ -189,4 +200,43 @@ fn accepts_the_mdbook_0_4_sections_key() {
         .as_str()
         .unwrap()
         .contains("<svg"));
+}
+
+/// The bundle is minified, so its stack traces are an offset into one enormous
+/// line. Useless to a reader, and they make an ordinary message -- a slot
+/// count, a bad theme -- look like a crash.
+#[test]
+fn a_javascript_stack_is_hidden_by_default() {
+    let md = "```swirly\n@ t | 0 | 1\n\n> s | 'a'\n```\n";
+    let (ok, _, stderr) = run(&payload(md, json!({})));
+    assert!(!ok);
+    assert!(stderr.contains("slot"), "{stderr}");
+    assert!(
+        !stderr.contains("eval_script"),
+        "expected no JavaScript stack by default, got: {stderr}"
+    );
+}
+
+#[test]
+fn mdbook_swirly_debug_shows_the_javascript_stack() {
+    let md = "```swirly\n@ t | 0 | 1\n\n> s | 'a'\n```\n";
+    let (ok, _, stderr) = run_with_env(&payload(md, json!({})), &[("MDBOOK_SWIRLY_DEBUG", "1")]);
+    assert!(!ok);
+    assert!(
+        stderr.contains("eval_script"),
+        "expected a JavaScript stack, got: {stderr}"
+    );
+}
+
+#[test]
+fn mdbook_swirly_debug_is_off_when_empty_or_zero() {
+    let md = "```swirly\n@ t | 0 | 1\n\n> s | 'a'\n```\n";
+    for value in ["", "0"] {
+        let (_, _, stderr) =
+            run_with_env(&payload(md, json!({})), &[("MDBOOK_SWIRLY_DEBUG", value)]);
+        assert!(
+            !stderr.contains("eval_script"),
+            "MDBOOK_SWIRLY_DEBUG={value:?} should be off, got: {stderr}"
+        );
+    }
 }
