@@ -1,8 +1,16 @@
 # mdbook-swirly
 
 An [mdBook](https://rust-lang.github.io/mdBook/) preprocessor that renders
-[Swirly](https://github.com/timdp/swirly) marble and grid diagrams to SVG at
-build time.
+Swirly marble and grid diagrams to SVG at build time.
+
+It embeds the [`grid-mode` fork of
+Swirly](https://github.com/RadicalZephyr/swirly/tree/grid-mode), not
+[upstream](https://github.com/timdp/swirly): the grid diagrams below — a
+transaction axis shared by stream and cell rows — are that fork's addition.
+Marble diagrams work exactly as they do upstream.
+
+**[Documentation](https://zefira.dev/mdbook-swirly/)** — tutorial, how-to
+guides, syntax reference, and every Swirly example rendered.
 
 Write a diagram in a fenced block:
 
@@ -103,8 +111,9 @@ engine, rather than by an embedded JavaScript runtime. Rust owns the CLI,
 stdin/stdout and `book.toml`, which is also what makes `toml_edit` available
 for a well-behaved `install`.
 
-The result is a ~2 MB self-contained binary with no runtime dependencies. You
-do not need Node to use this, only to rebuild the bundle.
+The result is a 1.7 MB self-contained binary with no runtime dependencies —
+110 KB of that the bundled Swirly. You do not need Node to use this, only to
+rebuild the bundle.
 
 ## Rebuilding the bundle
 
@@ -114,12 +123,29 @@ embeds:
 
 ```bash
 git submodule update --init
-(cd vendor/swirly && yarn --frozen-lockfile && yarn build)
-./js/build.sh                 # or SWIRLY=/path/to/swirly ./js/build.sh
+(cd vendor/swirly && yarn --frozen-lockfile && yarn build --filter='!@swirly/examples')
+./js/build.sh
+git add src/swirly-bundle.js        # it is committed, so commit it
 ```
 
-CI regenerates the bundle from the submodule and fails if the result differs
-from the committed one, so the two cannot drift apart silently.
+The `--filter` matters. A plain `yarn build` also builds `@swirly/examples`,
+which rasterizes its PNGs by driving headless Chromium — no use to the bundle,
+and it cannot launch on a CI runner. Excluding it is what CI does too.
+
+Pass `SWIRLY=/path/to/checkout` to `js/build.sh` to build against a Swirly
+working copy somewhere else, which is useful while changing the renderer
+itself. The bundle is reproducible either way: it is minified, so it carries no
+module paths and does not depend on where the checkout sits.
+
+To move to a newer Swirly, bump the submodule and rebuild:
+
+```bash
+git -C vendor/swirly fetch origin grid-mode
+git -C vendor/swirly checkout <commit>
+```
+
+CI regenerates the bundle from whatever the submodule pins and fails if the
+result differs from the committed one, so the two cannot drift apart silently.
 
 ## Licence
 
