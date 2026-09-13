@@ -108,17 +108,18 @@ do not need Node to use this, only to rebuild the bundle.
 
 ## Rebuilding the bundle
 
-`src/swirly-bundle.js` is generated and committed. Regenerating it needs a
-checkout of Swirly with its dependencies installed and built:
+`src/swirly-bundle.js` is generated and committed. It is built from the Swirly
+submodule in `vendor/`, whose commit pointer is what pins the version this crate
+embeds:
 
 ```bash
-git clone https://github.com/timdp/swirly.git ../swirly
-(cd ../swirly && yarn && yarn build)
+git submodule update --init
+(cd vendor/swirly && yarn --frozen-lockfile && yarn build)
 ./js/build.sh                 # or SWIRLY=/path/to/swirly ./js/build.sh
 ```
 
-`js/swirly-rev.txt` records the Swirly commit the committed bundle came from;
-CI regenerates at that revision and fails if the result differs.
+CI regenerates the bundle from the submodule and fails if the result differs
+from the committed one, so the two cannot drift apart silently.
 
 ## Licence
 

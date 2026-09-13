@@ -1,0 +1,4 @@
+[submodule "vendor/swirly"]
+	path = vendor/swirly
+	url = https://github.com/RadicalZephyr/swirly.git
+	branch = grid-mode

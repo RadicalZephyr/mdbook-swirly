@@ -25,35 +25,26 @@ jobs:
       - run: cargo test
 
   # The bundle is a generated file that is committed, so it can drift from the
-  # Swirly revision it claims to come from. Rebuild it at that revision and
-  # require the result to be byte-identical.
+  # Swirly revision the submodule pins. Rebuild it there and require the result
+  # to be byte-identical.
   bundle:
     name: Bundle is current
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-
-      - name: Read the pinned Swirly revision
-        id: rev
-        run: echo "sha=$(cat js/swirly-rev.txt)" >> "$GITHUB_OUTPUT"
-
-      - name: Check out Swirly at that revision
-        uses: actions/checkout@v7
         with:
-          repository: ${{ vars.SWIRLY_REPO || 'timdp/swirly' }}
-          ref: ${{ steps.rev.outputs.sha }}
-          path: swirly
+          submodules: true
 
       - uses: actions/setup-node@v4
         with:
           node-version: 18
 
       - name: Build Swirly
-        working-directory: swirly
+        working-directory: vendor/swirly
         run: yarn --frozen-lockfile && yarn build
 
       - name: Regenerate the bundle
-        run: SWIRLY="$GITHUB_WORKSPACE/swirly" ./js/build.sh
+        run: ./js/build.sh
 
       - name: Fail if it differs from the committed one
         run: |
@@ -63,4 +54,4 @@ jobs:
             git diff --stat -- src/swirly-bundle.js
             exit 1
           fi
-          echo "Bundle matches Swirly @ ${{ steps.rev.outputs.sha }}"
+          echo "Bundle matches vendor/swirly @ $(git -C vendor/swirly rev-parse --short HEAD)"
