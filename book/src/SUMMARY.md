@@ -13,6 +13,11 @@
 # How-to guides
 
 - [How-to guides](how-to/index.md)
+  - [Add diagrams to an existing book](how-to/add-to-a-book.md)
+  - [Choose a theme](how-to/choose-a-theme.md)
+  - [Restyle diagrams](how-to/restyle-diagrams.md)
+  - [Diagnose a failing diagram](how-to/diagnose-a-failure.md)
+  - [Build a book in CI](how-to/build-in-ci.md)
 
 # Reference
 
