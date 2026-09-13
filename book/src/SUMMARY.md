@@ -22,6 +22,10 @@
 # Reference
 
 - [Reference](reference/index.md)
+  - [Diagram syntax](reference/syntax.md)
+  - [Configuration](reference/configuration.md)
+  - [Command line](reference/cli.md)
+  - [Themes and styles](reference/themes.md)
 
 # Explanation
 
