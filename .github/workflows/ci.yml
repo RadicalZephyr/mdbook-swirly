@@ -52,6 +52,26 @@ jobs:
         env:
           PUPPETEER_SKIP_DOWNLOAD: "true"
 
+      - name: Identify the pinned Swirly revision
+        id: swirly
+        run: echo "sha=$(git -C vendor/swirly rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      # Turbo replays a package's dist/ straight out of this directory, so a
+      # hit turns the build below into a ~1s restore. The submodule SHA is the
+      # whole key: it fixes both the sources and the lockfile, since the
+      # lockfile lives in the submodule too. The prefix fallback is still worth
+      # having -- after a submodule bump, turbo's own hashing lets every
+      # package that did not change replay from the older entry.
+      #
+      # This has to come after the install: the cache lives under node_modules,
+      # which does not exist until yarn has run.
+      - name: Cache the Swirly build
+        uses: actions/cache@v6
+        with:
+          path: vendor/swirly/node_modules/.cache/turbo
+          key: swirly-turbo-${{ runner.os }}-${{ steps.swirly.outputs.sha }}
+          restore-keys: swirly-turbo-${{ runner.os }}-
+
       # Not `yarn build`: that runs turbo over every package, including
       # @swirly/examples, which rasterizes its PNGs by driving headless
       # Chromium and cannot launch it on a runner. Those images are no use to
