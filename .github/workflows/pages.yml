@@ -1,0 +1,97 @@
+name: Book
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A deploy that started earlier has nothing useful to add once a newer commit
+# is on its way, but letting it finish avoids leaving Pages half-updated.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+  MDBOOK_VERSION: "0.5.4"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # The examples gallery pulls its diagrams out of vendor/swirly with
+      # mdBook includes, so without the submodule those pages come out as
+      # "could not read file" rather than as diagrams.
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install mdBook
+        uses: taiki-e/install-action@v2
+        with:
+          tool: mdbook@${{ env.MDBOOK_VERSION }}
+
+      # book.toml runs ../target/release/mdbook-swirly, so the book is built by
+      # the code in this commit rather than by a published release.
+      - name: Build the preprocessor
+        run: cargo build --release
+
+      # mdBook logs a failed include or a missing file as an ERROR line and
+      # then exits zero, which would publish a book with diagrams quietly
+      # missing. Build once, keep the log, and judge it ourselves.
+      - name: Build the book
+        run: |
+          set -o pipefail
+          mdbook build book 2>&1 | tee build.log
+
+      - name: Fail on anything mdBook only logged
+        run: |
+          if grep -q 'ERROR' build.log; then
+            echo "::error::mdbook logged errors while building the book"
+            grep 'ERROR' build.log
+            exit 1
+          fi
+          echo "No errors logged."
+
+      - name: Check every diagram rendered
+        run: |
+          # Every `swirly` fence should have become an <svg class="swirly">.
+          # A leftover `language-swirly` means the preprocessor never ran, which
+          # mdBook does not otherwise report.
+          if grep -rq 'language-swirly' target/book/; then
+            echo "::error::found unrendered swirly blocks in the output"
+            grep -rl 'language-swirly' target/book/
+            exit 1
+          fi
+          count=$(grep -rho 'class="swirly"' target/book/ | wc -l)
+          echo "Rendered $count diagrams."
+          test "$count" -gt 0
+
+      - uses: actions/configure-pages@v5
+        if: github.ref == 'refs/heads/main'
+
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: target/book
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
