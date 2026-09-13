@@ -4,7 +4,7 @@ Every example in the [Swirly repository](https://github.com/RadicalZephyr/swirly
 rendered by this preprocessor.
 
 These pages are not copies. The Swirly repository is a git submodule of this
-one, and each example is pulled in with mdBook's `{{#include}}` — so what you
+one, and each example is pulled in with mdBook's `\{{#include}}` — so what you
 see below is the current contents of those files, rendered by the version of
 Swirly this crate embeds. If an example changes upstream, this page changes
 with it.

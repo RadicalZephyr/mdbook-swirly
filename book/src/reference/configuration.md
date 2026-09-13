@@ -32,11 +32,11 @@ unrecognised value for `on-error` does the same.
 | Key | Why |
 | --- | --- |
 | `command` | how mdBook invokes the preprocessor |
-| `after = ["links"]` | makes `{{#include}}` expand before we look for diagrams |
+| `after = ["links"]` | makes `\{{#include}}` expand before we look for diagrams |
 | `additional-css` | loads the stylesheet the `adaptive` theme needs |
 
 `after` is an ordering declaration, not a dependency: if the `links`
-preprocessor is disabled, ours still runs, but `{{#include}}` will not have been
+preprocessor is disabled, ours still runs, but `\{{#include}}` will not have been
 expanded.
 
 ## Per-block options

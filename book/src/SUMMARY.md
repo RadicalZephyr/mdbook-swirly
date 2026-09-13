@@ -37,3 +37,5 @@
 # Examples
 
 - [Examples](examples/index.md)
+  - [Grid diagrams](examples/grid.md)
+  - [Marble diagrams](examples/marble.md)

@@ -58,7 +58,7 @@ And a stylesheet appeared in `assets/`. That stylesheet is not decoration — it
 is what lets a diagram follow the reader's theme. We come back to it in
 [Themes](themes.md).
 
-The `after = ["links"]` is there so that mdBook expands any `{{#include}}`
+The `after = ["links"]` is there so that mdBook expands any `\{{#include}}`
 before we go looking for diagrams. It matters later, when you want to keep a
 diagram in its own file.
 

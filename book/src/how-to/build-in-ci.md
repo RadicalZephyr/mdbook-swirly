@@ -72,7 +72,7 @@ to check it out:
           submodules: true
 ```
 
-Without that, `{{#include}}` finds an empty directory, and mdBook reports a
+Without that, `\{{#include}}` finds an empty directory, and mdBook reports a
 missing file rather than a missing submodule, which is a confusing five minutes.
 
 ## Publishing to GitHub Pages
